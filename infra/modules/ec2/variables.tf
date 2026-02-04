@@ -47,3 +47,8 @@ variable "db_name" {
   type        = string
   default     = "appdb"
 }
+
+variable "public_key" {
+  description = "SSH 공개 키"
+  type        = string
+}

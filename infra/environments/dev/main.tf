@@ -55,4 +55,5 @@ module "ec2" {
   db_host           = module.rds.db_hostname
   db_username       = var.db_username
   db_name           = var.db_name
+  public_key        = file(var.public_key_path)
 }

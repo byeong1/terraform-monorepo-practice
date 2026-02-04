@@ -58,3 +58,9 @@ variable "db_name" {
   type        = string
   default     = "appdb"
 }
+
+variable "public_key_path" {
+  description = "SSH 공개 키 파일 경로"
+  type        = string
+  default     = "~/.ssh/terraform_practice.pub"
+}

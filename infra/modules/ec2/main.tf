@@ -1,9 +1,16 @@
+# SSH 키 페어
+resource "aws_key_pair" "deployer" {
+  key_name   = "${var.project_name}-key"
+  public_key = var.public_key
+}
+
 # EC2 인스턴스 - Docker Compose 기반 앱 서버
 resource "aws_instance" "web" {
   ami                    = var.ami_id
   instance_type          = var.instance_type
   subnet_id              = var.subnet_id
   vpc_security_group_ids = [var.security_group_id]
+  key_name               = aws_key_pair.deployer.key_name
 
   user_data = <<-EOF
 #!/bin/bash
