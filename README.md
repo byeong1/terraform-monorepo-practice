@@ -5,7 +5,7 @@
 ```
 VPC (10.0.0.0/16)
 ├── 퍼블릭 서브넷 (10.0.1.0/24) - ap-northeast-2a
-│   └── EC2 (t2.micro)
+│   └── EC2 (t2.micro) + SSH 키 페어
 │       └── Docker Compose
 │           ├── Backend (NestJS)
 │           └── Frontend (Vue + Nginx)
@@ -34,7 +34,7 @@ terraform/
 │   │   ├── vpc/                  # VPC, 서브넷, IGW, 라우트 테이블
 │   │   ├── security/             # 보안그룹 (EC2용, DB용)
 │   │   ├── rds/                  # RDS MySQL 인스턴스
-│   │   └── ec2/                  # EC2 인스턴스 + user_data
+│   │   └── ec2/                  # EC2 인스턴스 + SSH 키 페어 + user_data
 │   └── environments/
 │       └── dev/                  # 개발 환경 설정
 │           ├── main.tf           # 모듈 조합
@@ -49,7 +49,15 @@ terraform/
 
 ## 사전 준비
 
-### 1. Terraform 설치
+### 1. SSH 키 페어 생성
+
+EC2 접속 및 SSH 터널링(로컬에서 RDS 접근)에 필요하다.
+
+```bash
+ssh-keygen -t rsa -b 4096 -f ~/.ssh/terraform_practice
+```
+
+### 2. Terraform 설치
 
 ```bash
 winget install HashiCorp.Terraform
@@ -57,12 +65,12 @@ winget install HashiCorp.Terraform
 
 설치 후 터미널을 재시작하여 PATH를 반영한다.
 
-### 2. AWS IAM 설정
+### 3. AWS IAM 설정
 
 - IAM 사용자 생성 (`AdministratorAccess` 권한 그룹에 추가)
 - 해당 사용자의 액세스 키 발급 (`Access Key ID`, `Secret Access Key`)
 
-### 3. Node.js 및 Yarn 설치
+### 4. Node.js 및 Yarn 설치
 
 Terraform 래퍼 스크립트(`scripts/tf.js`) 실행에 필요하다.
 
@@ -113,6 +121,32 @@ yarn infra:destroy
 | `yarn infra:plan`    | 인프라 변경사항 미리보기                   |
 | `yarn infra:apply`   | 인프라 생성/변경 적용                      |
 | `yarn infra:destroy` | 인프라 전체 삭제                           |
+
+## SSH 접속
+
+```bash
+ssh -i ~/.ssh/terraform_practice ec2-user@<EC2_IP>
+```
+
+## SSH 터널링 (로컬에서 RDS 접근)
+
+RDS는 프라이빗 서브넷에 있어 직접 접근이 불가능하다. EC2를 경유하는 SSH 터널링으로 로컬에서 접근할 수 있다.
+
+```bash
+ssh -i ~/.ssh/terraform_practice -L 3306:<RDS_ENDPOINT>:3306 ec2-user@<EC2_IP>
+```
+
+터널링 후 DB 클라이언트에서 `localhost:3306`으로 접속 가능.
+
+DBeaver 등의 DB 클라이언트에서 SSH 탭을 통해 터널링을 설정할 수도 있다:
+
+| 항목 | 값 |
+|------|-----|
+| SSH Host | `<EC2_IP>` |
+| SSH Port | `22` |
+| SSH User | `ec2-user` |
+| Auth Method | Public Key |
+| Private Key | `~/.ssh/terraform_practice` |
 
 ## 보안 구성
 
