@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+.env.docker
+!.env.example
+*.tfstate
+*.tfstate.backup
+.terraform/

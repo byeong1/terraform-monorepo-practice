@@ -1,0 +1,24 @@
+{
+  "name": "terraform-practice",
+  "private": true,
+  "workspaces": [
+    "app/frontend",
+    "app/backend"
+  ],
+  "scripts": {
+    "dev:frontend": "yarn workspace frontend dev",
+    "dev:backend": "yarn workspace backend start:dev",
+    "build:frontend": "yarn workspace frontend build",
+    "build:backend": "yarn workspace backend build",
+    "build": "yarn build:backend && yarn build:frontend",
+    "start:prod": "yarn workspace backend start:prod",
+    "infra:init": "node scripts/tf.js init",
+    "infra:plan": "node scripts/tf.js plan",
+    "infra:apply": "node scripts/tf.js apply",
+    "infra:destroy": "node scripts/tf.js destroy",
+    "infra": "node scripts/tf.js"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
