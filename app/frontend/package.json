@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "jb-videojs-hls-quality-selector": "^2.0.2",
+    "video.js": "^8.10.0",
     "vue": "^3.3.0"
   },
   "devDependencies": {
