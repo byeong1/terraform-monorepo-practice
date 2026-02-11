@@ -52,3 +52,38 @@ variable "public_key" {
   description = "SSH 공개 키"
   type        = string
 }
+
+variable "media_bucket_name" {
+  description = "미디어 S3 버킷 이름"
+  type        = string
+  default     = ""
+}
+
+variable "cloudfront_domain" {
+  description = "CloudFront 도메인"
+  type        = string
+  default     = ""
+}
+
+variable "region" {
+  description = "AWS 리전"
+  type        = string
+  default     = "ap-northeast-2"
+}
+
+variable "callback_secret" {
+  description = "동영상 콜백 시크릿"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+variable "backend_image" {
+  description = "Backend Docker 이미지 URL (ECR)"
+  type        = string
+}
+
+variable "frontend_image" {
+  description = "Frontend Docker 이미지 URL (ECR)"
+  type        = string
+}
