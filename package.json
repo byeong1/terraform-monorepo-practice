@@ -19,6 +19,6 @@
     "infra": "node scripts/tf.js"
   },
   "devDependencies": {
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.4.7"
   }
 }
