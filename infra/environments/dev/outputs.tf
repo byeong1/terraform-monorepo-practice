@@ -24,3 +24,18 @@ output "rds_endpoint" {
   description = "RDS 엔드포인트"
   value       = module.rds.db_endpoint
 }
+
+output "cloudfront_domain" {
+  description = "CloudFront 도메인 (HLS 스트리밍)"
+  value       = module.media.cloudfront_domain
+}
+
+output "ecr_backend_url" {
+  description = "Backend ECR 리포지토리 URL"
+  value       = module.ecr.backend_repository_url
+}
+
+output "ecr_frontend_url" {
+  description = "Frontend ECR 리포지토리 URL"
+  value       = module.ecr.frontend_repository_url
+}

@@ -50,17 +50,27 @@ variable "db_password" {
 variable "db_username" {
   description = "RDS 마스터 사용자 이름"
   type        = string
-  default     = "admin"
+  sensitive   = true
 }
 
 variable "db_name" {
   description = "RDS 데이터베이스 이름"
   type        = string
-  default     = "appdb"
+  sensitive   = true
 }
 
 variable "public_key_path" {
   description = "SSH 공개 키 파일 경로"
   type        = string
-  default     = "~/.ssh/terraform_practice.pub"
+}
+
+variable "private_key_path" {
+  description = "SSH 프라이빗 키 파일 경로 (배포용)"
+  type        = string
+}
+
+variable "callback_secret" {
+  description = "동영상 상태 콜백 시크릿"
+  type        = string
+  sensitive   = true
 }
